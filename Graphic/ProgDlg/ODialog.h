@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -50,9 +50,9 @@ namespace RePag
 				WNDCLASSEX wndKlasse;
 			};
 			STFensterBau* vstFensterBau;
-			HANDLE heSchliessen;
 			long lRuckgabe;
 			bool bModal;
+			DWORD dwThreadID;
 			void __vectorcall WM_Move_Dialog(void);
 			void __vectorcall WM_Paint_Dialog(void);
 			void __vectorcall WM_Command_Dialog(unsigned int uiMessage, WPARAM wParam, LPARAM lParam);

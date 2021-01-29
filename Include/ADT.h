@@ -1,4 +1,4 @@
-// up Fileversion 2.3.6.0
+// up Fileversion 2.3.7.0
 #ifndef ADTH
 #define ADTH
 #ifndef CompSysH
@@ -95,7 +95,7 @@ namespace RePag
     __declspec(dllimport) COComma4* __vectorcall COComma4V(_In_ const __m128d m128dNumber);                                // Note range of values
     __declspec(dllimport) COComma4* __vectorcall COComma4V(_In_ const VMEMORY vmMemory, _In_ const __m128d m128dNumber);   // Note range of values
     //---------------------------------------------------------------------------
-    class __declspec(dllexport) COComma4_80
+    class __declspec(dllimport) COComma4_80
     {
     private:
       struct STComma4_80
@@ -201,11 +201,15 @@ namespace RePag
       struct STStringA
       {
         VMBLOCK vbInhalt;
-        unsigned long ulLange;
         VMBLOCK vbInhalt_A;
+        unsigned long ulLange;
         unsigned long ulLange_A;
       };
+#ifndef _64bit
       char c16StringA[16];
+#else
+      char c16StringA[24];
+#endif
       VMEMORY vmMemory;
 
     public:
@@ -560,6 +564,7 @@ namespace RePag
     __declspec(dllimport) char* __vectorcall LONGLONGtoCHAR(_Out_writes_z_(21) char pc21Number[21], _In_ long long llNumber);
     __declspec(dllimport) char* __vectorcall ULONGtoCHAR(_Out_writes_z_(11) char pc11Number[11], _In_ unsigned long ulNumber);
     __declspec(dllimport) char* __vectorcall ULONGtoHexCHAR(_Out_writes_z_(10) char pc10HexNumber[10], _In_ unsigned long ulNumber);
+    __declspec(dllimport) char* __vectorcall ULONGtoHexCHAR_64(_Out_writes_z_(18) char pc18HexNumber[18], _In_ unsigned long long ulNumber);
     __declspec(dllimport) char* __vectorcall DOUBLE_B10toCHAR(_Out_writes_z_(28) char pc28Number[28], _In_ double dNumber, _In_ unsigned char ucPositions); // ucPosition = 15 - rounds from 16 to 15 positions not technically possible
     __declspec(dllimport) char* __vectorcall FLOAT_B10toCHAR(_Out_writes_z_(20) char pc20Number[20], _In_ float fNumber, _In_ unsigned char ucPositions);   // ucPosition = 7 -  rounds from 8 to 7 positions not technically possible
     __declspec(dllimport) char* __vectorcall BIT128toGUID(_Out_writes_z_(37) char pc37GUID[37], _In_ const BIT128 bit128Value);

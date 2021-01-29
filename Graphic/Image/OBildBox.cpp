@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -50,19 +50,19 @@ LRESULT CALLBACK RePag::GUI::WndProc_BildBox(HWND hWnd, unsigned int uiMessage, 
  switch(uiMessage){
 		case WM_CREATE          : ((COBildBox*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 															return NULL;
-		case WM_SIZE            : pBildBox = (COBildBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE            : pBildBox = (COBildBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 														  if(pBildBox) pBildBox->WM_Size(lParam);
 															else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 															return NULL;
-		case WM_VSCROLL         : ((COBildBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_VScroll(wParam);
+		case WM_VSCROLL         : ((COBildBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_VScroll(wParam);
 															return NULL;
-		case WM_HSCROLL         : ((COBildBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_HScroll(wParam);
+		case WM_HSCROLL         : ((COBildBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_HScroll(wParam);
 															return NULL;
-		case WM_MOUSEWHEEL      : ((COBildBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_MouseWheel(wParam, lParam);
+		case WM_MOUSEWHEEL      : ((COBildBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_MouseWheel(wParam, lParam);
 			                        return NULL;
-		case WM_PAINT           : ((COBildBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT           : ((COBildBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 										          return NULL;
-		case WM_NCDESTROY       : pBildBox = (COBildBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY       : pBildBox = (COBildBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 															if(pBildBox->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pBildBox->htEffekt_Timer, INVALID_HANDLE_VALUE);
 			                        VMFreiV(pBildBox);
 			                        return NULL;

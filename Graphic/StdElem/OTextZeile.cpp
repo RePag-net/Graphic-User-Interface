@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -47,7 +47,7 @@ RePag::GUI::COTextZeile* __vectorcall RePag::GUI::COTextZeileV(VMEMORY vmSpeiche
 LRESULT CALLBACK RePag::GUI::WndProc_TextZeile(HWND hWnd, unsigned int uiMessage, WPARAM wParam, LPARAM lParam)
 {
 	COTextZeile* pTextZeile;
-		switch(uiMessage){
+	switch(uiMessage){
 		case WM_CREATE		: (((COTextZeile*)((LPCREATESTRUCT)lParam)->lpCreateParams))->WM_Create(hWnd);
 												return NULL;
 		case WM_SIZE			:	pTextZeile = (COTextZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
@@ -69,7 +69,7 @@ void __vectorcall RePag::GUI::COTextZeile::COTextZeileV(VMEMORY vmSpeicher, cons
 {
 	COGrafikV(vmSpeicher, pcKlassenName, pcFensterName, uiIDElementA);
 
-	hFont = NULL;
+	hFont = nullptr;
 	lfSchrift.lfHeight = -13;
 	lfSchrift.lfWidth = 0;
 	lfSchrift.lfFaceName[0] = '\0';
@@ -86,6 +86,7 @@ void __vectorcall RePag::GUI::COTextZeile::COTextZeileV(VMEMORY vmSpeicher, cons
 	lfSchrift.lfPitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
 
 	vasInhalt = COStringAV(vmSpeicher);
+
 	stSchriftfarbe.ucRot = stSchriftfarbe.ucGrun = stSchriftfarbe.ucBlau = 0;
 	ucSchriftausrichtung = TXA_LINKS | TXA_MITTEVERTICAL;
 }

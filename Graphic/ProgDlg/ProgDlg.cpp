@@ -6,7 +6,7 @@
 /****************************************************************************
   The MIT License(MIT)
 
-  Copyright(c) 2020 René Pagel
+  Copyright(c) 2021 René Pagel
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this softwareand associated documentation files(the "Software"), to deal
@@ -58,7 +58,7 @@ void __vectorcall RePagPrg_Start(void)
   wndKlasse.cbSize = sizeof(WNDCLASSEX);
   wndKlasse.style = CS_OWNDC;
   wndKlasse.cbClsExtra = 0;
-  wndKlasse.cbWndExtra = 8;
+  wndKlasse.cbWndExtra = 16;
   wndKlasse.hInstance = NULL;
   wndKlasse.hIcon = NULL;
   wndKlasse.hCursor = LoadCursor(NULL, IDC_ARROW);
@@ -106,7 +106,7 @@ void __vectorcall RePagPrg_Start(void)
   vthlDialoge = COListV(vmDialog, true);
   vthlThreadId = COListV(vmDialog, true);
   vthlWndKlassen = COListV(true);
-  InitializeCriticalSectionAndSpinCount(&thstWndKlassen.csWndKlasse, 4000);
+  InitializeCriticalSectionAndSpinCount(&thstWndKlassen.csWndKlasse, 1000);
   thstWndKlassen.bAbbruch = false;
   heWndKlassen = CreateEvent(NULL, false, false, NULL);
   hthWndKlassen = CreateThread(NULL, 0, thLoschWndKlassen, &thstWndKlassen, CREATE_SUSPENDED, NULL);
@@ -159,12 +159,12 @@ void __vectorcall RePag::GUI::Cursorform(const char* pcCursor)
 void __vectorcall RePag::GUI::EinfugenKurzTasten(const ACCEL* pacTasten, int iAnzahl)
 {
   int iKurzTasten = CopyAcceleratorTable(hAccelerator, NULL, 0);
-  ACCEL* vacTasten = (ACCEL*)VMBlock(sizeof(ACCEL) * (iKurzTasten + iAnzahl));
+  ACCEL* vacTasten = (ACCEL*)malloc(sizeof(ACCEL) * (iKurzTasten + iAnzahl));
   CopyAcceleratorTable(hAccelerator, vacTasten, iKurzTasten);
   DestroyAcceleratorTable(hAccelerator);
   MemCopy(&vacTasten[iKurzTasten], pacTasten, sizeof(ACCEL) * iAnzahl);
   hAccelerator = CreateAcceleratorTable(vacTasten, iKurzTasten + iAnzahl);
-  VMFrei(vacTasten);
+  free(vacTasten);
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void __vectorcall LoschWndKlasse(ATOM atWndKlasse)

@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -50,21 +50,21 @@ LRESULT CALLBACK RePag::GUI::WndProc_Schalter(HWND hWnd, unsigned int uiMessage,
 	switch(uiMessage){
 		case WM_CREATE      : ((COSchalter*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 													return NULL;
-		case WM_SIZE        : pSchalter = (COSchalter*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE        : pSchalter = (COSchalter*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pSchalter) pSchalter->WM_Size_Element(hWnd, lParam);
 													else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 													return NULL;
 		case WM_COMMAND     : PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 													break;
-		case WM_LBUTTONDOWN : pSchalter = (COSchalter*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_LBUTTONDOWN : pSchalter = (COSchalter*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													SetCapture(hWnd);
 													if(pSchalter->pfnWM_LButtonDown){ pSchalter->ThreadSicher_Anfang(); pSchalter->pfnWM_LButtonDown(pSchalter); pSchalter->ThreadSicher_Ende(); }
 													return NULL;
-		case WM_LBUTTONUP   : ((COSchalter*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonUp(wParam, lParam);
+		case WM_LBUTTONUP   : ((COSchalter*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonUp(wParam, lParam);
 													return NULL;
-		case WM_PAINT       : ((COSchalter*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT       : ((COSchalter*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 													return NULL;
-		case WM_NCDESTROY   : pSchalter = (COSchalter*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY   : pSchalter = (COSchalter*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pSchalter->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pSchalter->htEffekt_Timer, INVALID_HANDLE_VALUE);
 													VMFreiV(pSchalter);
 													return NULL;

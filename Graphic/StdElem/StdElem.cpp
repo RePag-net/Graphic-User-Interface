@@ -6,7 +6,7 @@
 /****************************************************************************
   The MIT License(MIT)
 
-  Copyright(c) 2020 René Pagel
+  Copyright(c) 2021 René Pagel
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this softwareand associated documentation files(the "Software"), to deal
@@ -70,7 +70,7 @@ void __vectorcall RegisterKlassenName(void)
   wndKlasse.cbSize = sizeof(WNDCLASSEX);
   wndKlasse.style = CS_OWNDC;
   wndKlasse.cbClsExtra = 0;
-  wndKlasse.cbWndExtra = 8;
+  wndKlasse.cbWndExtra = 16;
   wndKlasse.hInstance = NULL;
   wndKlasse.hIcon = NULL;
   wndKlasse.hCursor = LoadCursor(NULL, IDC_ARROW);

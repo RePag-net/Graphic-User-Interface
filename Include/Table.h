@@ -1,4 +1,4 @@
-// up Fileversion 3.2.4.0
+// up Fileversion 3.2.4.1
 #ifndef TabelleH
 #define TabelleH
 
@@ -12,7 +12,12 @@ namespace RePag
 			VMBLOCK vbWert;
 			unsigned long ulLange;
 		} STFeld;
+#ifndef _64bit
 		constexpr BYTE BY_STFeld = 8;
+#else
+		constexpr BYTE BY_STFeld = 16;
+#endif
+
 		//---------------------------------------------------------------------------------------------------------------------------------------
 	}
 }
@@ -59,7 +64,11 @@ namespace RePag
 		class __declspec(dllimport) COFeld
 		{
 		private:
+#ifndef _64bit
 			char c8Feld[8];
+#else
+			char c12Feld[12];
+#endif
 			unsigned char ucFeldtyp;
 
 		protected:

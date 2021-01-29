@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -63,7 +63,7 @@ void __vectorcall RePag::GUI::frWM_Paint_Kopf(COSchalterGruppe* psgKopf, PAINTST
  }
  DeleteObject(hPen);
 }
-//-----------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------
 void __vectorcall RePag::GUI::frAndernSpaltenBreite(HWND hWndTabelle, unsigned char ucSpalte, long lBreite)
 {
  COTabBasis* pTabelle = (COTabBasis*)GetWindowLongPtr(hWndTabelle, GWLP_USERDATA); POINT stCursor; RECT rcZeichnen;
@@ -225,7 +225,7 @@ void __vectorcall RePag::GUI::frEingabeListe_WM_LButtonUp(COListBox* plbEingabe)
 
  RECT rcZeichnen;
  if(pTabelle->bAnsehen) pTabelle->bAnsehen = false;
- else{ pTabelle->AndernWert(true); pTabelle->ezEingabe->Hintergrundfarbe(255, 255, 255); pTabelle->ezEingabe->Schriftfarbe(0, 0, 128);}
+ else{ pTabelle->AndernWert(true); pTabelle->ezEingabe->Hintergrundfarbe(255, 255, 255); pTabelle->ezEingabe->Schriftfarbe(0, 0, 128); }
 
  plbEingabe->SetzSichtbar(false); plbEingabe->SetzVerfugbar(false);
  pTabelle->UpdateFenster(&plbEingabe->Fenster(rcZeichnen), true, false);
@@ -1775,7 +1775,11 @@ void __vectorcall RePag::GUI::COTabBasis::NeueTabelle(void)
  }
 
  ulTabZeilen_max = ulTabZeilen_blatt;
+#ifndef _64bit
  vpTabelle = (STFeld**)VMBlockS(vmTabelle, ulTabZeilen_max * 4);
+#else
+ vpTabelle = (STFeld**)VMBlockS(vmTabelle, ulTabZeilen_max * 8);
+#endif
 
  ucSpalteSelect = 0; ulZeileSelect = 0; bSelectiert = false; bAktiv = false;
  if(ezEingabe->Sichtbar()){ ezEingabe->SetzSichtbar(false); ezEingabe->SetzVerfugbar(false); }
@@ -1859,7 +1863,11 @@ void __vectorcall RePag::GUI::COTabBasis::DSAnfugen(STFeld* pstFelder)
 {
  if(ulDSAnzahl < ulTabZeilen_max) vpTabelle[ulDSAnzahl++] = pstFelder;
  else{ ULONG ulDS = 0; ulTabZeilen_max += ulTabZeilen_blatt;
+#ifndef _64bit
        STFeld** vpTabelleNeu = (STFeld**)VMBlockS(vmTabelle, ulTabZeilen_max * 4);
+#else
+			 STFeld** vpTabelleNeu = (STFeld**)VMBlockS(vmTabelle, ulTabZeilen_max * 8);
+#endif
 			 while(ulDS < ulDSAnzahl){ vpTabelleNeu[ulDS] = vpTabelle[ulDS]; ulDS++; }
        vpTabelleNeu[ulDS++] = pstFelder; ulDSAnzahl++;
        VMFreiS(vmTabelle, vpTabelle);

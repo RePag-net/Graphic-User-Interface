@@ -1,5 +1,5 @@
 /****************************************************************************
-	ODokument.h
+	ODocument.h
 	For more information see https://github.com/RePag-net/Graphic-User-Interface
 *****************************************************************************/
 

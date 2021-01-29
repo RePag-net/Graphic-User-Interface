@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -50,23 +50,23 @@ LRESULT CALLBACK RePag::GUI::WndProc_Passwort(HWND hWnd, unsigned int uiMessage,
 	switch(uiMessage){
 		case WM_CREATE      : ((COPasswort*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 													return NULL;
-		case WM_SIZE        : pPasswortA = (COPasswort*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE        : pPasswortA = (COPasswort*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pPasswortA) pPasswortA->WM_Size_Element(hWnd, lParam);
 													else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 													return NULL;
-		case WM_SETFOCUS    : ((COPasswort*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_SetFocus();
+		case WM_SETFOCUS    : ((COPasswort*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_SetFocus();
 													return NULL;
-		case WM_KILLFOCUS   : ((COPasswort*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_KillFocus();
+		case WM_KILLFOCUS   : ((COPasswort*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_KillFocus();
 													return NULL;
-		case WM_CHAR        :	((COPasswort*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Char(wParam);
+		case WM_CHAR        :	((COPasswort*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Char(wParam);
 													return NULL;
-		case WM_CONTEXTMENU : ((COPasswort*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_ContexMenu(lParam);
+		case WM_CONTEXTMENU : ((COPasswort*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_ContexMenu(lParam);
 													return NULL;
-		case WM_LBUTTONDOWN : ((COPasswort*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonDown(lParam);
+		case WM_LBUTTONDOWN : ((COPasswort*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonDown(lParam);
 													return NULL;
-		case WM_PAINT       : ((COPasswort*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT       : ((COPasswort*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 													return NULL;
-		case WM_NCDESTROY   : pPasswortA = (COPasswort*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY   : pPasswortA = (COPasswort*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pPasswortA->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pPasswortA->htEffekt_Timer, INVALID_HANDLE_VALUE);
 													VMFreiV(pPasswortA);
 													return NULL;

@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -127,6 +127,9 @@ void __vectorcall RePag::GUI::COElement::WM_Paint_Hintergrund(PAINTSTRUCT& stPai
 //-----------------------------------------------------------------------------------------------------------------------------------------
 void __vectorcall RePag::GUI::COElement::Hintergrund_Effekt(RECT* prcZeichnen)
 {
+	ULONG ulTest = *(ULONG*)&stHintergrundeffektfarbe;
+	ULONG ulTest_1 = rcEffektrand.top;
+
  if(ucHintergrundeffekt > HGE_HINTERGRUND){
 	 if(ucHintergrundeffekt & HGE_BELEUCHTUNG_H) Effekt_Beleuchtung_Horizontal();
 	 if(ucHintergrundeffekt & HGE_BELEUCHTUNG_V) Effekt_Beleuchtung_Vertical();

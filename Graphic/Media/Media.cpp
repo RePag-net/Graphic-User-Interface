@@ -42,7 +42,7 @@ void __vectorcall RegisterKlassenName(void)
   wndKlasse.cbSize = sizeof(WNDCLASSEX);
   wndKlasse.style = CS_OWNDC;
   wndKlasse.cbClsExtra = 0;
-  wndKlasse.cbWndExtra = 8;
+  wndKlasse.cbWndExtra = 16;
   wndKlasse.hInstance = nullptr;
   wndKlasse.hIcon = nullptr;
   wndKlasse.hCursor = LoadCursor(nullptr, IDC_ARROW);

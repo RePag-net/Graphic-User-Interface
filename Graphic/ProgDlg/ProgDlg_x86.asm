@@ -6,7 +6,7 @@
 ;/****************************************************************************
 ;  The MIT License(MIT)
 ;
-;  Copyright(c) 2020 René Pagel
+;  Copyright(c) 2021 René Pagel
 ;
 ;  Permission is hereby granted, free of charge, to any person obtaining a copy
 ;  of this softwareand associated documentation files(the "Software"), to deal
@@ -558,7 +558,7 @@ c_stHintergrundeffektfarbe = 26
 
 		mov ecx, dword ptr c_stHintergrundeffektfarbe[ebp]
 		mov ebx, dword ptr c_rcEffektrand_oben[ebp]
-		cmp ebx, 0h
+		test ebx, ebx
 		je Schritt
       
 		mov ebx, ecx
@@ -600,9 +600,9 @@ c_stHintergrundeffektfarbe = 26
 		movd mm3, ecx
 
     mov edx, dword ptr c_rcEffektrand_unten[ebp]
-		cmp edx, 0h
+		test edx, edx
 		je RandOben
-		dec edx
+		sub edx, 1
 
 	RandOben:
 		movd mm7, edx

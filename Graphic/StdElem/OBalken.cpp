@@ -1,12 +1,12 @@
 /****************************************************************************
-	OBalken.cpp
+	OBalken.cppp
 	For more information see https://github.com/RePag-net/Graphic-User-Interface
 *****************************************************************************/
 
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -48,19 +48,19 @@ LRESULT CALLBACK RePag::GUI::WndProc_Balken(HWND hWnd, unsigned int uiMessage, W
 {
 	COBalken* pBalken;
 	switch(uiMessage){
-		case WM_SIZE        : pBalken = (COBalken*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE        : pBalken = (COBalken*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pBalken) pBalken->WM_Size(lParam);
 													else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 													return NULL;
-		case WM_LBUTTONDOWN : ((COBalken*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonDown(wParam, lParam);
+		case WM_LBUTTONDOWN : ((COBalken*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonDown(wParam, lParam);
 													return NULL;
 		case WM_LBUTTONUP   : PostMessage(GetParent(hWnd), WM_COMMAND, MAKEWPARAM(GetWindowLongPtr(hWnd, GWLP_ID), wParam), lParam);
 													return NULL;
-		case WM_MOUSEMOVE   : ((COBalken*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_MouseMove(wParam, lParam);
+		case WM_MOUSEMOVE   : ((COBalken*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_MouseMove(wParam, lParam);
 													return NULL;
-		case WM_PAINT       : ((COBalken*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT       : ((COBalken*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 													return NULL;
-		case WM_NCDESTROY   : pBalken = (COBalken*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY   : pBalken = (COBalken*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pBalken->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pBalken->htEffekt_Timer, INVALID_HANDLE_VALUE);
 													VMFreiV(pBalken);
 													return NULL;

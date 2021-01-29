@@ -1,12 +1,12 @@
 /****************************************************************************
-  OGrafik.cpp
+  OGrafic.cpp
   For more information see https://github.com/RePag-net/Graphic-User-Interface
 *****************************************************************************/
 
 /****************************************************************************
   The MIT License(MIT)
 
-  Copyright(c) 2020 René Pagel
+  Copyright(c) 2021 René Pagel
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this softwareand associated documentation files(the "Software"), to deal
@@ -32,16 +32,16 @@
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void __vectorcall RePag::GUI::COGrafik::COGrafikV(VMEMORY vmSpeicher, const char* pcKlassenName, const char* pcFensterName, unsigned int uiIDElementA)
 {
- COElementV(vmSpeicher);
+	COElementV(vmSpeicher);
 
- vstFensterBau = (STFensterBau*)VMBlock(sizeof(STFensterBau));
- vstFensterBau->dwFensterStil = WS_CHILDWINDOW | WS_VISIBLE | WS_CLIPSIBLINGS;
- vstFensterBau->dwErweitertStil = WS_EX_LEFT | WS_EX_NOPARENTNOTIFY;
- vstFensterBau->uiIDElement = uiIDElementA;
- vstFensterBau->asFensterName = pcFensterName;
- BYTE ucBytes_Name = (BYTE)StrLength(pcKlassenName);
- vstFensterBau->vbKlassenName = VMBlock(ucBytes_Name + 1); vstFensterBau->vbKlassenName[ucBytes_Name] = 0;
- MemCopy(vstFensterBau->vbKlassenName, pcKlassenName, ucBytes_Name); 
+	vstFensterBau = (STFensterBau*)VMBlock(sizeof(STFensterBau));
+	vstFensterBau->dwFensterStil = WS_CHILDWINDOW | WS_VISIBLE | WS_CLIPSIBLINGS;
+	vstFensterBau->dwErweitertStil = WS_EX_LEFT | WS_EX_NOPARENTNOTIFY;
+	vstFensterBau->uiIDElement = uiIDElementA;
+	vstFensterBau->asFensterName = "pcFensterName";
+	BYTE ucBytes_Name = (BYTE)StrLength(pcKlassenName);
+	vstFensterBau->vbKlassenName = VMBlock(ucBytes_Name + 1); vstFensterBau->vbKlassenName[ucBytes_Name] = 0;
+	MemCopy(vstFensterBau->vbKlassenName, pcKlassenName, ucBytes_Name);
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void __vectorcall RePag::GUI::COGrafik::FensterStil(DWORD dwFensterStilA)

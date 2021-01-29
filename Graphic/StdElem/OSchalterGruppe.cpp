@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -48,22 +48,22 @@ LRESULT CALLBACK RePag::GUI::WndProc_SchalterGruppe(HWND hWnd, unsigned int uiMe
 {
  COSchalterGruppe* pSchalterGruppe;
  switch(uiMessage){
-	  case WM_SIZE        : pSchalterGruppe = (COSchalterGruppe*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+	  case WM_SIZE        : pSchalterGruppe = (COSchalterGruppe*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 			                    if(pSchalterGruppe) pSchalterGruppe->WM_Size_Element(hWnd, lParam);
 													else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 			                    return NULL;
 		case WM_COMMAND     : PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 			                    return NULL;	
-		case WM_LBUTTONDOWN : ((COSchalterGruppe*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonDown(lParam);
+		case WM_LBUTTONDOWN : ((COSchalterGruppe*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonDown(lParam);
 			                    return NULL;
 		case WM_LBUTTONUP   : ReleaseCapture();
 													PostMessage(GetParent(hWnd), WM_COMMAND, MAKEWPARAM(GetWindowLongPtr(hWnd, GWLP_ID), wParam), lParam);
 			                    return NULL;
-		case WM_MOUSEMOVE   : ((COSchalterGruppe*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_MouseMove(wParam, lParam);
+		case WM_MOUSEMOVE   : ((COSchalterGruppe*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_MouseMove(wParam, lParam);
 			                    return NULL;												
-		case WM_PAINT       : ((COSchalterGruppe*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT       : ((COSchalterGruppe*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 										      return NULL;
-		case WM_NCDESTROY   : pSchalterGruppe = (COSchalterGruppe*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY   : pSchalterGruppe = (COSchalterGruppe*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pSchalterGruppe->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pSchalterGruppe->htEffekt_Timer, INVALID_HANDLE_VALUE);
 			                    VMFreiV(pSchalterGruppe);
 			                    return NULL;
@@ -77,22 +77,22 @@ LRESULT CALLBACK RePag::GUI::WndProc_WechselSchalter(HWND hWnd, unsigned int uiM
  switch(uiMessage){
 		case WM_CREATE        : ((COSchalterGruppe::COWechselSchalter*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 														return NULL;
-	  case WM_SIZE          : pWechselSchalter = (COSchalterGruppe::COWechselSchalter*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+	  case WM_SIZE          : pWechselSchalter = (COSchalterGruppe::COWechselSchalter*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 			                      if(pWechselSchalter) pWechselSchalter->WM_Size_Element(hWnd, lParam);
 			                      return NULL;
 		case WM_COMMAND       : PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 													  break;
-		case WM_LBUTTONDOWN   : pWechselSchalter = (COSchalterGruppe::COWechselSchalter*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_LBUTTONDOWN   : pWechselSchalter = (COSchalterGruppe::COWechselSchalter*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 			                      SetCapture(hWnd);
 														if(pWechselSchalter->pfnWM_LButtonDown){ pWechselSchalter->ThreadSicher_Anfang();
 														  pWechselSchalter->pfnWM_LButtonDown(pWechselSchalter); pWechselSchalter->ThreadSicher_Ende(); }
                             return NULL;
-		case WM_LBUTTONUP     : ((COSchalterGruppe::COWechselSchalter*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonUp(wParam, lParam);	
+		case WM_LBUTTONUP     : ((COSchalterGruppe::COWechselSchalter*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonUp(wParam, lParam);	
                             return NULL;
-		case WM_PAINT         : ((COSchalterGruppe::COWechselSchalter*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT         : ((COSchalterGruppe::COWechselSchalter*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 										        return NULL;
-		case WM_NCDESTROY     : pWechselSchalter = (COSchalterGruppe::COWechselSchalter*)GetWindowLongPtr(hWnd, GWL_USERDATA);
-														pWechselSchalter->pSchalterGruppe->vpWechselSchalter[pWechselSchalter->IDElement() - pWechselSchalter->pSchalterGruppe->IDElement() - 1] = NULL;
+		case WM_NCDESTROY     : pWechselSchalter = (COSchalterGruppe::COWechselSchalter*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+														pWechselSchalter->pSchalterGruppe->vpWechselSchalter[pWechselSchalter->IDElement() - pWechselSchalter->pSchalterGruppe->IDElement() - 1] = nullptr;
 			                      VMFreiV(pWechselSchalter);
 			                      return NULL;
  }
@@ -108,12 +108,16 @@ void __vectorcall RePag::GUI::COSchalterGruppe::COSchalterGruppeV(VMEMORY vmSpei
  SetzHintergrund(false);
 
  ucModus = ucWechselmodus;
- pfnWM_Paint = NULL;
- pfnAndernSpaltenBreite = NULL;
+ pfnWM_Paint = nullptr;
+ pfnAndernSpaltenBreite = nullptr;
  sMausPos_x = 0;
  ucIndex = 0xFF;
 
+#ifndef _64bit
  vpWechselSchalter = (COWechselSchalter**)VMBlock(vmSpeicher, ucSchalteranzahl * 4);
+#else
+ vpWechselSchalter = (COWechselSchalter**)VMBlock(vmSpeicher, ucSchalteranzahl * 8);
+#endif
  char pc11Zahl[11]; COStringA asName = pcFensterName; asName += "_WechselSchalter_";
  ucAnzahl = 0; uiIDElementA++;
  while(ucAnzahl < ucSchalteranzahl){
@@ -145,7 +149,11 @@ void __vectorcall RePag::GUI::COSchalterGruppe::COTabellenKopfV(VMEMORY vmSpeich
  sMausPos_x = 0;
  ucIndex = 0xFF;
 
+#ifndef _64bit
  vpWechselSchalter = (COWechselSchalter**)VMBlock(vmSpeicher, ucSchalteranzahl * 4);
+#else
+ vpWechselSchalter = (COWechselSchalter**)VMBlock(vmSpeicher, ucSchalteranzahl * 8);
+#endif
  char pc11Zahl[11]; COStringA asName = pcFensterName; asName += "_Schalter_";
  ucAnzahl = 0; uiIDElementA++;
  while(ucAnzahl < ucSchalteranzahl){

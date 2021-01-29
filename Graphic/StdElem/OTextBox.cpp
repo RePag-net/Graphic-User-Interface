@@ -1,12 +1,12 @@
 /****************************************************************************
-	OTextBox.cpp
+	OTextBox.h
 	For more information see https://github.com/RePag-net/Graphic-User-Interface
 *****************************************************************************/
 
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -53,23 +53,23 @@ LRESULT CALLBACK RePag::GUI::WndProc_TextBox(HWND hWnd, unsigned int uiMessage, 
  switch(uiMessage){
 		case WM_CREATE          : ((COTextBox*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 															return NULL;
-		case WM_SIZE            : pTextBox = (COTextBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE            : pTextBox = (COTextBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 															if(pTextBox) pTextBox->WM_Size(lParam);
 															else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 															return NULL;
-		case WM_VSCROLL         : ((COTextBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_VScroll(wParam);
+		case WM_VSCROLL         : ((COTextBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_VScroll(wParam);
 															return NULL;
-		case WM_HSCROLL         : ((COTextBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_HScroll(wParam);
+		case WM_HSCROLL         : ((COTextBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_HScroll(wParam);
 															return NULL;
-		case WM_LBUTTONDOWN     : ((COTextBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonDown();
+		case WM_LBUTTONDOWN     : ((COTextBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonDown();
 			                        return NULL;
-		case WM_LBUTTONUP       : ((COTextBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonUp(wParam, lParam);
+		case WM_LBUTTONUP       : ((COTextBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonUp(wParam, lParam);
                               return NULL;
-		case WM_MOUSEWHEEL      : ((COTextBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_MouseWheel(wParam, lParam);
+		case WM_MOUSEWHEEL      : ((COTextBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_MouseWheel(wParam, lParam);
 			                        return NULL;
-		case WM_PAINT           : ((COTextBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT           : ((COTextBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 															return NULL;
-		case WM_NCDESTROY       : pTextBox = (COTextBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY       : pTextBox = (COTextBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 															if(pTextBox->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pTextBox->htEffekt_Timer, INVALID_HANDLE_VALUE);
 			                        VMFreiV(pTextBox);
 			                        return NULL;
@@ -412,6 +412,7 @@ void __vectorcall RePag::GUI::COTextBox::Text(char* pcText)
      
  if(pcText && StrLength(pcText)){
 	 *vasInhalt = pcText;
+	 ULONG ulTest = vasInhalt->Length();
 	 if(vasInhalt->Length() && (*vasInhalt)[vasInhalt->Length() - 1] != 0x0A) *vasInhalt += "\n";
 
 	 if(hWndElement){

@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -50,19 +50,19 @@ LRESULT CALLBACK RePag::GUI::WndProc_EditZeile(HWND hWnd, unsigned int uiMessage
 	switch(uiMessage){
 		case WM_CREATE        : ((COEditZeile*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 														return NULL;
-		case WM_SIZE          : pEditZeile = (COEditZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE          : pEditZeile = (COEditZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 														if(pEditZeile) pEditZeile->WM_Size_Element(hWnd, lParam);
 														else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 														return NULL;
-		case WM_SETFOCUS      : ((COEditZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_SetFocus();
+		case WM_SETFOCUS      : ((COEditZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_SetFocus();
 														return NULL;
-		case WM_KILLFOCUS     : ((COEditZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_KillFocus();
+		case WM_KILLFOCUS     : ((COEditZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_KillFocus();
 														return NULL;
-		case WM_KEYDOWN       :	((COEditZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_KeyDown(wParam, lParam);
+		case WM_KEYDOWN       :	((COEditZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_KeyDown(wParam, lParam);
 														return NULL;
-		case WM_CHAR          :	((COEditZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Char(wParam);
+		case WM_CHAR          :	((COEditZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Char(wParam);
 														return NULL;
-		case WM_COMMAND       : pEditZeile = (COEditZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_COMMAND       : pEditZeile = (COEditZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 														if(!pEditZeile->WM_Command(wParam)) return NULL;
 														else if(pEditZeile->pfnWM_Command){
 															pEditZeile->ThreadSicher_Anfang();
@@ -71,19 +71,19 @@ LRESULT CALLBACK RePag::GUI::WndProc_EditZeile(HWND hWnd, unsigned int uiMessage
 														}
 														else PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 														break;
-		case WM_CONTEXTMENU   : ((COEditZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_ContexMenu(lParam);
+		case WM_CONTEXTMENU   : ((COEditZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_ContexMenu(lParam);
 														return NULL;
-		case WM_MOUSEMOVE     : ((COEditZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_MouseMove(wParam, lParam);
+		case WM_MOUSEMOVE     : ((COEditZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_MouseMove(wParam, lParam);
 														return NULL;
-		case WM_LBUTTONDOWN   : ((COEditZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonDown(wParam, lParam);
+		case WM_LBUTTONDOWN   : ((COEditZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonDown(wParam, lParam);
 														return NULL;
-		case WM_LBUTTONUP     : ((COEditZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonUp(wParam, lParam);
+		case WM_LBUTTONUP     : ((COEditZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonUp(wParam, lParam);
 														return NULL;
-		case WM_LBUTTONDBLCLK : ((COEditZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonDBClick(wParam, lParam);
+		case WM_LBUTTONDBLCLK : ((COEditZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonDBClick(wParam, lParam);
 														return NULL;
-		case WM_PAINT         : ((COEditZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT         : ((COEditZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 														return NULL;
-		case WM_NCDESTROY     : pEditZeile = (COEditZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY     : pEditZeile = (COEditZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 														if(pEditZeile->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pEditZeile->htEffekt_Timer, INVALID_HANDLE_VALUE);
 														VMFreiV(pEditZeile);
 														return NULL;

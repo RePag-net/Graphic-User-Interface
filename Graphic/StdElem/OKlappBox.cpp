@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -51,25 +51,25 @@ LRESULT CALLBACK RePag::GUI::WndProc_KlappBox(HWND hWnd, unsigned int uiMessage,
 		case WM_CREATE      : ((COKlappBox*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 												  ((COKlappBox*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create_KlappBox(hWnd);
 												  return NULL;
-		case WM_SIZE        : pKlappBox = (COKlappBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE        : pKlappBox = (COKlappBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 												  if(pKlappBox) pKlappBox->WM_Size(lParam);
 												  else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 												  return NULL;
-		case WM_KILLFOCUS   : pKlappBox = (COKlappBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_KILLFOCUS   : pKlappBox = (COKlappBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 												  pKlappBox->ThreadSicher_Anfang();
 												  if(IsWindowVisible(hWnd)) pKlappBox->WM_LButtonUp_KlappBox();
 												  if(pKlappBox->pfnWM_KillFocus) pKlappBox->pfnWM_KillFocus(pKlappBox);
 												  pKlappBox->ThreadSicher_Ende();
 												  return NULL;
-		case WM_VSCROLL     : ((COKlappBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_VScroll(wParam);
+		case WM_VSCROLL     : ((COKlappBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_VScroll(wParam);
 													return NULL;
-		case WM_HSCROLL     : ((COKlappBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_HScroll(wParam);
+		case WM_HSCROLL     : ((COKlappBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_HScroll(wParam);
 													return NULL;
-		case WM_KEYDOWN     : ((COKlappBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_KeyDown(wParam);
+		case WM_KEYDOWN     : ((COKlappBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_KeyDown(wParam);
 													return NULL;
-		case WM_CHAR        : ((COKlappBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Char(wParam);
+		case WM_CHAR        : ((COKlappBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Char(wParam);
 													return NULL;
-		case WM_COMMAND     : pKlappBox = (COKlappBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_COMMAND     : pKlappBox = (COKlappBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pKlappBox->pfnWM_Command){
 														pKlappBox->ThreadSicher_Anfang();
 														if(!pKlappBox->pfnWM_Command(pKlappBox, wParam)){ pKlappBox->ThreadSicher_Ende(); return NULL; }
@@ -77,10 +77,10 @@ LRESULT CALLBACK RePag::GUI::WndProc_KlappBox(HWND hWnd, unsigned int uiMessage,
 													}
 													else PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 													break;
-		case WM_LBUTTONDOWN : pKlappBox = (COKlappBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_LBUTTONDOWN : pKlappBox = (COKlappBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pKlappBox->pfnWM_LButtonDown){ pKlappBox->ThreadSicher_Anfang(); pKlappBox->pfnWM_LButtonDown(pKlappBox); pKlappBox->ThreadSicher_Ende(); }
 													return NULL;
-		case WM_LBUTTONUP   : pKlappBox = (COKlappBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_LBUTTONUP   : pKlappBox = (COKlappBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													pKlappBox->ThreadSicher_Anfang();
 													pKlappBox->WM_LButtonUp(lParam);
 													pKlappBox->WM_LButtonUp_KlappBox();
@@ -88,11 +88,11 @@ LRESULT CALLBACK RePag::GUI::WndProc_KlappBox(HWND hWnd, unsigned int uiMessage,
 													else PostMessage(GetParent(hWnd), WM_COMMAND, MAKEWPARAM(GetWindowLongPtr(hWnd, GWLP_ID), wParam), lParam);
 													pKlappBox->ThreadSicher_Ende();
 													return NULL;
-		case WM_MOUSEWHEEL  : ((COKlappBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_MouseWheel(wParam, lParam);
+		case WM_MOUSEWHEEL  : ((COKlappBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_MouseWheel(wParam, lParam);
 													return NULL;
-		case WM_PAINT       : ((COKlappBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT       : ((COKlappBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 													return NULL;
-		case WM_NCDESTROY   : pKlappBox = (COKlappBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY   : pKlappBox = (COKlappBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pKlappBox->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pKlappBox->htEffekt_Timer, INVALID_HANDLE_VALUE);
 													VMFreiV(pKlappBox);
 													return NULL;
@@ -106,27 +106,27 @@ LRESULT CALLBACK RePag::GUI::WndProc_EintragZeile(HWND hWnd, unsigned int uiMess
 	switch(uiMessage){
 		case WM_CREATE			: ((COKlappBox::COEintragZeile*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 													return NULL;
-		case WM_SIZE				: pEintragZeile = (COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE				: pEintragZeile = (COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pEintragZeile) pEintragZeile->WM_Size_Element(hWnd, lParam);
 													else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 													return NULL;
-		case WM_SETFOCUS		: ((COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_SetFocus();
+		case WM_SETFOCUS		: ((COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_SetFocus();
 													return NULL;
-		case WM_KILLFOCUS		: ((COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_KillFocus();
+		case WM_KILLFOCUS		: ((COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_KillFocus();
 													return NULL;
-		case WM_CHAR				: pEintragZeile = (COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_CHAR				: pEintragZeile = (COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(IsWindowEnabled(hWnd)) pEintragZeile->WM_Char(wParam);
 													return NULL;
 		case WM_COMMAND			: PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 													return NULL;
-		case WM_LBUTTONDOWN : pEintragZeile = (COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_LBUTTONDOWN : pEintragZeile = (COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pEintragZeile->pfnWM_LButtonDown){ pEintragZeile->ThreadSicher_Anfang(); pEintragZeile->pfnWM_LButtonDown(pEintragZeile); pEintragZeile->ThreadSicher_Ende(); }
 													return NULL;
-		case WM_LBUTTONUP		: ((COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonUp(wParam, lParam);
+		case WM_LBUTTONUP		: ((COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonUp(wParam, lParam);
 													return NULL;
-		case WM_PAINT				: ((COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT				: ((COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 													return NULL;
-		case WM_NCDESTROY		: pEintragZeile = (COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY		: pEintragZeile = (COKlappBox::COEintragZeile*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pEintragZeile->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pEintragZeile->htEffekt_Timer, INVALID_HANDLE_VALUE);
 													pEintragZeile->pKlappBox->ezEintrag = NULL;	VMFreiV(pEintragZeile);
 													return NULL;
@@ -228,7 +228,7 @@ void __vectorcall RePag::GUI::COKlappBox::WM_LButtonUp_KlappBox(void)
  ShowWindow(hWndElement, SW_HIDE);
  RECT stRect; HWND hWndZeichnen_1, hWndZeichnen_2 = GetParent(hWndElement); 
  while(IsChild(hWndZeichnen_1 = GetParent(hWndZeichnen_2), hWndZeichnen_2)) hWndZeichnen_2 = hWndZeichnen_1;
- ((COElement*)GetWindowLongPtr(hWndZeichnen_2, GWL_USERDATA))->UpdateFenster(&Fenster(stRect), true, false);
+ ((COElement*)GetWindowLongPtr(hWndZeichnen_2, GWLP_USERDATA))->UpdateFenster(&Fenster(stRect), true, false);
  //InvalidateRect(hWndZeichnen_2, &Fenster(stRect), true); UpdateWindow(hWndZeichnen_2);
  ThreadSicher_Ende();
 }

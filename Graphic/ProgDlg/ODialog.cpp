@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -40,6 +40,7 @@
 #define DLG_MINIMAL 64
 #define DLG_MAXIMAL 128
 #define IDE_DLG_SICHTBAR 0xFFFF
+#define IDE_DLG_WM_QUIT 0xFFFE
 //-----------------------------------------------------------------------------------------------------------------------------------------
 #define _WM_Command ((STTHWM_CommandDlg*)pvParam)
 //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -112,6 +113,7 @@ namespace RePag
 													return NULL;
 				case WM_CLOSE   :	DestroyWindow(hWnd);
 													return NULL;
+				case WM_DESTROY : if(hWnd == hWndErstes) PostQuitMessage(0);
 			}
 			return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 		}
@@ -127,12 +129,12 @@ void __vectorcall RePag::GUI::CODialog::CODialogV(VMEMORY vmSpeicher, const char
  vstFensterBau = (STFensterBau*)VMBlock(sizeof(STFensterBau));
  vstFensterBau->dwFensterStil = WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_VISIBLE | WS_CLIPCHILDREN;
  vstFensterBau->dwErweitertStil = WS_EX_TOOLWINDOW;
- vstFensterBau->asName = pcFensterName;
+ vstFensterBau->asName = "pcFensterName";
 
  vstFensterBau->wndKlasse.cbSize = sizeof(WNDCLASSEX);
  vstFensterBau->wndKlasse.style = CS_OWNDC;
  vstFensterBau->wndKlasse.cbClsExtra = 0;
- vstFensterBau->wndKlasse.cbWndExtra = 8;
+ vstFensterBau->wndKlasse.cbWndExtra = 16;
  vstFensterBau->wndKlasse.hInstance = hInstance;
  vstFensterBau->wndKlasse.lpfnWndProc = WndProc_Dialog;
  vstFensterBau->wndKlasse.hCursor = LoadCursor(nullptr, IDC_ARROW);
@@ -142,7 +144,6 @@ void __vectorcall RePag::GUI::CODialog::CODialogV(VMEMORY vmSpeicher, const char
  vstFensterBau->wndKlasse.hIconSm = nullptr;
 
  pfnWndProc_DLGDialog = WndProc_DLG;
- heSchliessen = CreateEvent(nullptr, false, false, nullptr);
  bModal = bModalA;
 
  lfSchrift.lfHeight = -13;
@@ -172,9 +173,7 @@ void __vectorcall RePag::GUI::CODialog::CODialogV(const char* pcFensterName, boo
 VMEMORY __vectorcall RePag::GUI::CODialog::COFreiV(void)
 {
  if(htEffekt_Timer) DeleteTimerQueueTimer(htqTimerQueue, htEffekt_Timer, INVALID_HANDLE_VALUE);
- (hWndElement != hWndErstes ? SetEvent(heSchliessen) : PostQuitMessage(0));
  LoschWndKlasse(GetClassWord(hWndElement, GCW_ATOM));
- CloseHandle(heSchliessen);
 
  void* pvDialoge = vthlDialoge->ThIteratorToBegin_Lock(); void* pvLoschen = nullptr;
  while(pvDialoge){
@@ -247,10 +246,11 @@ void __vectorcall RePag::GUI::CODialog::ErstellFenster(HWND hWndHaupt, long lHoh
 	 hWndElement = CreateWindowEx(vstFensterBau->dwErweitertStil, vstFensterBau->asName.c_Str(), vstFensterBau->asName.c_Str(), vstFensterBau->dwFensterStil,
 	                              ptPosition.x, ptPosition.y, lBreite, lHohe, hWndHaupt, nullptr, hInstance, this);
 
+	 if(!hWndErstes && !hWndHaupt) hWndErstes = hWndElement;
 	 if(hWndElement){
-	 	RECT rcClient; SetWindowText(hWndElement, vstFensterBau->vbTitel); SetWindowLongPtr(hWndElement, GWLP_USERDATA, (LONG_PTR)this);
-	 	GetClientRect(hWndElement, &rcClient); WM_Size_Element(hWndElement, MAKELPARAM(rcClient.right, rcClient.bottom));
-	 	VMFrei(vstFensterBau->vbTitel); vstFensterBau->asName.~COStringA(); VMFrei(vstFensterBau); vstFensterBau = nullptr;
+	 	 RECT rcClient; SetWindowText(hWndElement, vstFensterBau->vbTitel); SetWindowLongPtr(hWndElement, GWLP_USERDATA, (LONG_PTR)this);
+	 	 GetClientRect(hWndElement, &rcClient); WM_Size_Element(hWndElement, MAKELPARAM(rcClient.right, rcClient.bottom));
+	 	 VMFrei(vstFensterBau->vbTitel); vstFensterBau->asName.~COStringA(); VMFrei(vstFensterBau); vstFensterBau = nullptr;
 	 }
  }
 }
@@ -284,27 +284,22 @@ long __vectorcall RePag::GUI::CODialog::SetzSichtbar(bool bSichtbar, unsigned ch
 	 }
 	 ShowWindow(hWndElement, iShow); 
 
-	 MSG msg; HACCEL hAccelerator = Accelerator();
-	 if(!hWndErstes){ hWndErstes = hWndElement; 
+	 MSG msg; HACCEL hAccelerator = Accelerator(); dwThreadID = GetCurrentThreadId();
+	 if(hWndErstes == hWndElement){
 	   PostMessage(hWndElement, WM_COMMAND, IDE_DLG_SICHTBAR, NULL);
 	   while(GetMessage(&msg, nullptr, NULL, NULL)){ if(!TranslateAccelerator(msg.hwnd, hAccelerator, &msg)){ TranslateMessage(&msg); DispatchMessage(&msg); } }
 	 }
- 	 else{ void* pvThreadId = vthlThreadId->ThIteratorToBegin(); DWORD dwThreadId = GetCurrentThreadId(); COElement* pElement = nullptr;
+ 	 else{ void* pvThreadId = vthlThreadId->ThIteratorToBegin();  COElement* pElement = nullptr;
 	   while(pvThreadId){
-			 if(((STThreadId*)vthlThreadId->Element(pvThreadId))->dwThreadId == dwThreadId){ pElement = ((STThreadId*)vthlThreadId->Element(pvThreadId))->pElement; break; }
+			 if(((STThreadId*)vthlThreadId->Element(pvThreadId))->dwThreadId == dwThreadID){ pElement = ((STThreadId*)vthlThreadId->Element(pvThreadId))->pElement; break; }
        vthlThreadId->NextElement(pvThreadId);
 		 }
 		 vthlThreadId->ThIteratorEnd();
 		 if(pElement) ((CODialog*)pElement)->ThreadSicher_Ende();
      PostMessage(hWndElement, WM_COMMAND, IDE_DLG_SICHTBAR, NULL);
-		 while(true){
-			 while(PeekMessage(&msg, hWndElement, NULL, NULL, PM_REMOVE)){
-         switch(msg.message){
-           case WM_COMMAND  : WM_Command_Dialog(WM_COMMAND, msg.wParam, msg.lParam); break;
-           default          : if(!TranslateAccelerator(msg.hwnd, hAccelerator, &msg)){ TranslateMessage(&msg); DispatchMessage(&msg); }
-         }
-       }
-	     if(!MsgWaitForMultipleObjects(1, &heSchliessen, false, INFINITE, QS_ALLINPUT)) break;
+		 while(GetMessage(&msg, nullptr, NULL, NULL)){
+		 	 if(msg.message == WM_COMMAND) WM_Command_Dialog(WM_COMMAND, msg.wParam, msg.lParam);
+			 else{ if(!TranslateAccelerator(msg.hwnd, hAccelerator, &msg)){ TranslateMessage(&msg); DispatchMessage(&msg); } }
 		 }
      if(pElement) ((CODialog*)pElement)->ThreadSicher_Anfang();
 	 }
@@ -314,7 +309,7 @@ long __vectorcall RePag::GUI::CODialog::SetzSichtbar(bool bSichtbar, unsigned ch
 	 }
 	 ShowWindow(hWndElement, SW_HIDE);
  }
- else{ lRuckgabe = lRuckgabeA; (hWndElement != hWndErstes ? SetEvent(heSchliessen) : PostQuitMessage(0)); }
+ else{ lRuckgabe = lRuckgabeA; PostThreadMessage(dwThreadID, WM_QUIT, NULL, NULL); }
  return lRuckgabe;
 }
 //---------------------------------------------------------------------------------------------------------------------------------------

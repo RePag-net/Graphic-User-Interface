@@ -1,12 +1,12 @@
 /****************************************************************************
-	OVideo.cpp
+	OVideo.h
 	For more information see https://github.com/RePag-net/Graphic-User-Interface
 *****************************************************************************/
 
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -50,13 +50,13 @@ LRESULT CALLBACK RePag::GUI::WndProc_Video(HWND hWnd, unsigned int uiMessage, WP
  switch(uiMessage){
     case WM_CREATE          : ((COVideo*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 												      return NULL;
-		case WM_SIZE            : pVideo = (COVideo*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE            : pVideo = (COVideo*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 															if(pVideo) pVideo->WM_Size(lParam);
 															else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 													    return NULL;
-		case WM_CHAR            : if(IsWindowEnabled(hWnd)) ((COVideo*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Char(wParam);
+		case WM_CHAR            : if(IsWindowEnabled(hWnd)) ((COVideo*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Char(wParam);
 													    return NULL;
-		case WM_COMMAND         : pVideo = (COVideo*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_COMMAND         : pVideo = (COVideo*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 			                        if(!pVideo->WM_Command(wParam)) return NULL;
 			                        else if(pVideo->pfnWM_Command){ pVideo->ThreadSicher_Anfang();
 																if(!pVideo->pfnWM_Command(pVideo, wParam)){ pVideo->ThreadSicher_Ende(); return NULL;}
@@ -64,17 +64,17 @@ LRESULT CALLBACK RePag::GUI::WndProc_Video(HWND hWnd, unsigned int uiMessage, WP
 													    }
 															else PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 													    break;
-		case WM_CONTEXTMENU     : ((COVideo*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_ContexMenu(lParam);
+		case WM_CONTEXTMENU     : ((COVideo*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_ContexMenu(lParam);
 			                        return NULL;
 		case WM_LBUTTONDOWN     : SetFocus(hWnd);
 			                        return NULL;
 		case WM_LBUTTONUP       : PostMessage(GetParent(hWnd), WM_COMMAND, MAKEWPARAM(GetWindowLongPtr(hWnd, GWLP_ID), wParam), lParam);
 			                        break;
-		case MCIWNDM_NOTIFYMODE : ((COVideo*)GetWindowLongPtr(hWnd, GWL_USERDATA))->MCIWNDM_NotifyMode(lParam);
+		case MCIWNDM_NOTIFYMODE : ((COVideo*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->MCIWNDM_NotifyMode(lParam);
 			                        return NULL;
-		case WM_PAINT           : ((COVideo*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT           : ((COVideo*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 										          return NULL;
-		case WM_NCDESTROY       : pVideo = (COVideo*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY       : pVideo = (COVideo*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 															if(pVideo->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pVideo->htEffekt_Timer, INVALID_HANDLE_VALUE);
                               if(pVideo->htPosition) DeleteTimerQueueTimer(TimerQueue(), pVideo->htPosition, INVALID_HANDLE_VALUE);
 			                        VMFreiV(pVideo);

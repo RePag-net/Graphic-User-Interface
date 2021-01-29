@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -55,23 +55,23 @@ LRESULT CALLBACK RePag::GUI::WndProc_EditBox(HWND hWnd, unsigned int uiMessage, 
 	switch(uiMessage){
 		case WM_CREATE        : ((COEditBox*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 														return NULL;
-		case WM_SIZE          : pEditBox = (COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE          : pEditBox = (COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 														if(pEditBox) pEditBox->WM_Size(lParam);
 														else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 														return NULL;
-		case WM_VSCROLL       : ((COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_VScroll(wParam);
+		case WM_VSCROLL       : ((COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_VScroll(wParam);
 														return NULL;
-		case WM_HSCROLL       : ((COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_HScroll(wParam);
+		case WM_HSCROLL       : ((COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_HScroll(wParam);
 														return NULL;
-		case WM_SETFOCUS      : ((COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_SetFocus();
+		case WM_SETFOCUS      : ((COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_SetFocus();
 														return NULL;
-		case WM_KILLFOCUS     : ((COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_KillFocus();
+		case WM_KILLFOCUS     : ((COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_KillFocus();
 														return NULL;
-		case WM_KEYDOWN       : ((COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_KeyDown(wParam, lParam);
+		case WM_KEYDOWN       : ((COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_KeyDown(wParam, lParam);
 														return NULL;
-		case WM_CHAR          :	((COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Char(wParam);
+		case WM_CHAR          :	((COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Char(wParam);
 														return NULL;
-		case WM_COMMAND       : pEditBox = (COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_COMMAND       : pEditBox = (COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 														if(!pEditBox->WM_Command(wParam)) return NULL;
 														else if(pEditBox->pfnWM_Command){
 															pEditBox->ThreadSicher_Anfang();
@@ -80,19 +80,19 @@ LRESULT CALLBACK RePag::GUI::WndProc_EditBox(HWND hWnd, unsigned int uiMessage, 
 														}
 														else PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 														break;
-		case WM_CONTEXTMENU   : ((COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_ContexMenu(lParam);
+		case WM_CONTEXTMENU   : ((COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_ContexMenu(lParam);
 														return NULL;
-		case WM_MOUSEMOVE     : ((COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_MouseMove(wParam, lParam);
+		case WM_MOUSEMOVE     : ((COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_MouseMove(wParam, lParam);
 														return NULL;
-		case WM_LBUTTONDOWN   : ((COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonDown(lParam);
+		case WM_LBUTTONDOWN   : ((COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonDown(lParam);
 														return NULL;
-		case WM_LBUTTONUP     : ((COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonUp(wParam, lParam);
+		case WM_LBUTTONUP     : ((COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonUp(wParam, lParam);
 														return NULL;
-		case WM_MOUSEWHEEL    : ((COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_MouseWheel(wParam, lParam);
+		case WM_MOUSEWHEEL    : ((COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_MouseWheel(wParam, lParam);
 														return NULL;
-		case WM_PAINT         : ((COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT         : ((COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 														return NULL;
-		case WM_NCDESTROY     : pEditBox = (COEditBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY     : pEditBox = (COEditBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 														if(pEditBox->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pEditBox->htEffekt_Timer, INVALID_HANDLE_VALUE);
 														VMFreiV(pEditBox);
 														return NULL;

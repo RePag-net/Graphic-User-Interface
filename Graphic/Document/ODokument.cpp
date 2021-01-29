@@ -1,12 +1,12 @@
 /****************************************************************************
-	ODokument.cpp
+	ODocument.cpp
 	For more information see https://github.com/RePag-net/Graphic-User-Interface
 *****************************************************************************/
 
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -26,6 +26,7 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 ******************************************************************************/
+
 
 #include "HDocument.h"
 #include "ODokument.h"
@@ -54,22 +55,22 @@ LRESULT CALLBACK RePag::GUI::WndProc_Dokument(HWND hWnd, unsigned int uiMessage,
 {
  CODokument* pDokument;
  switch(uiMessage){
-	  case WM_SIZE         : pDokument = (CODokument*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+	  case WM_SIZE         : pDokument = (CODokument*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 			                     if(pDokument) pDokument->WM_Size_Element(hWnd, lParam);
 													 else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 			                     return NULL;
-    case WM_SETFOCUS     : ((CODokument*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_SetFocus();
+    case WM_SETFOCUS     : ((CODokument*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_SetFocus();
 													 return NULL;
-		case WM_KILLFOCUS    : pDokument = (CODokument*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_KILLFOCUS    : pDokument = (CODokument*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													 pDokument->ThreadSicher_Anfang();
 			                     pDokument->WM_KillFocus();
 													 if(pDokument->pfnWM_KillFocus) pDokument->pfnWM_KillFocus(pDokument);
 													 pDokument->ThreadSicher_Ende();
 													 return NULL;
-    case WM_CHAR         : pDokument = (CODokument*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+    case WM_CHAR         : pDokument = (CODokument*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 			                     if(IsWindowEnabled(hWnd)) pDokument->WM_Char(wParam);
 													 return NULL;
-		case WM_COMMAND      : pDokument = (CODokument*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_COMMAND      : pDokument = (CODokument*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 			                     if(!pDokument->WM_Command(wParam)) return NULL;
 			                     else if(pDokument->pfnWM_Command){ pDokument->ThreadSicher_Anfang();
 														 if(!pDokument->pfnWM_Command(pDokument, wParam)){ pDokument->ThreadSicher_Ende(); return NULL; }
@@ -77,15 +78,15 @@ LRESULT CALLBACK RePag::GUI::WndProc_Dokument(HWND hWnd, unsigned int uiMessage,
 													 }
 													 else PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 													 break;
-		case WM_CONTEXTMENU  : ((CODokument*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_ContexMenu(lParam);
+		case WM_CONTEXTMENU  : ((CODokument*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_ContexMenu(lParam);
 			                     return NULL;
-		case WM_LBUTTONDOWN  : ((CODokument*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonDown();
+		case WM_LBUTTONDOWN  : ((CODokument*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonDown();
                            return NULL;
-		case WM_LBUTTONUP    : ((CODokument*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonUp(wParam, lParam);
+		case WM_LBUTTONUP    : ((CODokument*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonUp(wParam, lParam);
                            return NULL;
-		case WM_PAINT        : ((CODokument*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT        : ((CODokument*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 										       return NULL;
-	  case WM_NCDESTROY    : pDokument = (CODokument*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+	  case WM_NCDESTROY    : pDokument = (CODokument*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													 if(pDokument->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pDokument->htEffekt_Timer, INVALID_HANDLE_VALUE);
 			                     VMFreiV(pDokument);
 			                     return NULL;

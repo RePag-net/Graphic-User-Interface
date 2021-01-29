@@ -1,12 +1,12 @@
 /****************************************************************************
-  Dokument.cpp
+  Document.cpp
   For more information see https://github.com/RePag-net/Graphic-User-Interface
 *****************************************************************************/
 
 /****************************************************************************
   The MIT License(MIT)
 
-  Copyright(c) 2020 René Pagel
+  Copyright(c) 2021 René Pagel
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this softwareand associated documentation files(the "Software"), to deal
@@ -40,7 +40,7 @@ void __vectorcall RegisterKlassenName(void)
   wndKlasse.cbSize = sizeof(WNDCLASSEX);
   wndKlasse.style = CS_OWNDC;
   wndKlasse.cbClsExtra = 0;
-  wndKlasse.cbWndExtra = 8;
+  wndKlasse.cbWndExtra = 16;
   wndKlasse.hInstance = nullptr;
   wndKlasse.hIcon = nullptr;
   wndKlasse.hCursor = LoadCursor(nullptr, IDC_ARROW);

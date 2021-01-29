@@ -1,4 +1,4 @@
-// up Fileversion 3.2.4.0
+// up Fileversion 3.2.3.1
 #ifndef ProgDlgH
 #define ProgDlgH
 //-------------------------------------------------------------------------------------------------------------------------------------------
@@ -117,9 +117,9 @@ namespace RePag
         WNDCLASSEX wndKlasse;
       };
       STFensterBau* vstFensterBau;
-      HANDLE heSchliessen;
       long lRuckgabe;
       bool bModal;
+      DWORD dwThreadID;
       void __vectorcall WM_Move_Dialog(void);
       void __vectorcall WM_Paint_Dialog(void);
       void __vectorcall WM_Command_Dialog(unsigned int uiMessage, WPARAM wParam, LPARAM lParam);

@@ -1,4 +1,4 @@
-// up Fileversion 2.2.5.0
+// up Fileversion 2.3.7.0
 #ifndef CompSysH
 #define CompSysH
 #include <Windows.h>
@@ -95,18 +95,20 @@ namespace RePag
     __declspec(dllimport) COBlock* __vectorcall COBlockV(_In_ VMBLOCK vbBlock, _In_ unsigned long ulBytes);
     //-------------------------------------------------------------------------------------------------------------------------------------------
     __declspec(dllimport) bool __vectorcall Is_SSE2(void);
+    __declspec(dllimport) bool __vectorcall Is_AVX(void);
+    __declspec(dllimport) bool __vectorcall Is_AVX2(void);
     __declspec(dllimport) void __vectorcall DeleteEvent(_In_ HANDLE hEvent);
     __declspec(dllimport) void __vectorcall ThreadTerminate(_In_ HANDLE hThread);
     __declspec(dllimport) unsigned int __vectorcall ZufallZahl(_In_ unsigned long ulRangeMin, _In_ unsigned long ulRangeMax);
     __declspec(dllimport) LONG __vectorcall CheckSignaturDatei(_In_z_ LPCSTR pcDateiname);  // Return value https://msdn.microsoft.com/EN-US/library/windows/desktop/aa388208(v=vs.85).aspx#
     __declspec(dllimport) LONG __vectorcall CheckSignaturModule(_In_ HMODULE hModule);      // Return value https://msdn.microsoft.com/EN-US/library/windows/desktop/aa388208(v=vs.85).aspx#
     __declspec(dllimport) bool __vectorcall InstallRePagRootCertificate(void);
-    __declspec(dllexport) BYTE __vectorcall SetTimeBSTPerfectBalance(_In_reads_z_(6) const char cTime[6]); // Format 24h examples "18:30" or "07:15"
-    __declspec(dllexport) BYTE __vectorcall DeleteTimeBSTPerfectBalance(void);
-    __declspec(dllexport) BYTE __vectorcall ImmediatelyBSTPerfectBalance(void);
-    __declspec(dllexport) BYTE __vectorcall SetTimeStartOptimize(_In_reads_z_(6) const char cTime[6]); // Format 24h examples "18:30" or "07:15"
-    __declspec(dllexport) BYTE __vectorcall DeleteTimeStartOptimize(void);
-    __declspec(dllexport) BYTE __vectorcall ImmediatelyStartOptimize(void);
+    __declspec(dllimport) BYTE __vectorcall SetTimeBSTPerfectBalance(_In_reads_z_(6) const char cTime[6]); // Format 24h examples "18:30" or "07:15"
+    __declspec(dllimport) BYTE __vectorcall DeleteTimeBSTPerfectBalance(void);
+    __declspec(dllimport) BYTE __vectorcall ImmediatelyBSTPerfectBalance(void);
+    __declspec(dllimport) BYTE __vectorcall SetTimeStartOptimize(_In_reads_z_(6) const char cTime[6]); // Format 24h examples "18:30" or "07:15"
+    __declspec(dllimport) BYTE __vectorcall DeleteTimeStartOptimize(void);
+    __declspec(dllimport) BYTE __vectorcall ImmediatelyStartOptimize(void);
   //-------------------------------------------------------------------------------------------------------------------------------------------
 
     constexpr BYTE SHA_128 = 1;

@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -51,22 +51,22 @@ LRESULT CALLBACK RePag::GUI::WndProc_ListBox(HWND hWnd, unsigned int uiMessage, 
 	switch(uiMessage){
 		case WM_CREATE      : ((COListBox*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 													return NULL;
-		case WM_SIZE        : pListBox = (COListBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE        : pListBox = (COListBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pListBox) pListBox->WM_Size(lParam);
 													else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 													return NULL;
-		case WM_KILLFOCUS   : pListBox = (COListBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_KILLFOCUS   : pListBox = (COListBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pListBox->pfnWM_KillFocus){ pListBox->ThreadSicher_Anfang(); pListBox->pfnWM_KillFocus(pListBox); pListBox->ThreadSicher_Ende(); }
 													return NULL;
-		case WM_VSCROLL     : ((COListBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_VScroll(wParam);
+		case WM_VSCROLL     : ((COListBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_VScroll(wParam);
 													return NULL;
-		case WM_HSCROLL     : ((COListBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_HScroll(wParam);
+		case WM_HSCROLL     : ((COListBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_HScroll(wParam);
 													return NULL;
-		case WM_KEYDOWN     : ((COListBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_KeyDown(wParam);
+		case WM_KEYDOWN     : ((COListBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_KeyDown(wParam);
 													return NULL;
-		case WM_CHAR        : ((COListBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Char(wParam);
+		case WM_CHAR        : ((COListBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Char(wParam);
 													return NULL;
-		case WM_COMMAND     : pListBox = (COListBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_COMMAND     : pListBox = (COListBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pListBox->pfnWM_Command){
 														pListBox->ThreadSicher_Anfang();
 														if(!pListBox->pfnWM_Command(pListBox, wParam)){ pListBox->ThreadSicher_Ende(); return NULL; }
@@ -74,21 +74,21 @@ LRESULT CALLBACK RePag::GUI::WndProc_ListBox(HWND hWnd, unsigned int uiMessage, 
 													}
 													else PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 													break;
-		case WM_LBUTTONDOWN : pListBox = (COListBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_LBUTTONDOWN : pListBox = (COListBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pListBox->pfnWM_LButtonDown){ pListBox->ThreadSicher_Anfang(); pListBox->pfnWM_LButtonDown(pListBox); pListBox->ThreadSicher_Ende(); }
 													return NULL;
-		case WM_LBUTTONUP   : pListBox = (COListBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_LBUTTONUP   : pListBox = (COListBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													pListBox->ThreadSicher_Anfang();
 													pListBox->WM_LButtonUp(lParam);
 													if(pListBox->pfnWM_LButtonUp) pListBox->pfnWM_LButtonUp(pListBox);
 													else PostMessage(GetParent(hWnd), WM_COMMAND, MAKEWPARAM(GetWindowLongPtr(hWnd, GWLP_ID), wParam), lParam);
 													pListBox->ThreadSicher_Ende();
 													return NULL;
-		case WM_MOUSEWHEEL  : ((COListBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_MouseWheel(wParam, lParam);
+		case WM_MOUSEWHEEL  : ((COListBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_MouseWheel(wParam, lParam);
 													return NULL;
-		case WM_PAINT       : ((COListBox*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT       : ((COListBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 													return NULL;
-		case WM_NCDESTROY   : pListBox = (COListBox*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY   : pListBox = (COListBox*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													if(pListBox->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pListBox->htEffekt_Timer, INVALID_HANDLE_VALUE);
 													VMFreiV(pListBox);
 													return NULL;

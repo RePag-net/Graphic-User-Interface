@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -55,17 +55,17 @@ LRESULT CALLBACK RePag::GUI::WndProc_Bild(HWND hWnd, unsigned int uiMessage, WPA
  switch(uiMessage){
 		case WM_CREATE       : ((COBild*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 												 	 return NULL;
-		case WM_SIZE         : pBild = (COBild*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE         : pBild = (COBild*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													 if(pBild) pBild->WM_Size(lParam);	
 													 else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 													 return NULL;
-		case WM_KILLFOCUS    : pBild = (COBild*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_KILLFOCUS    : pBild = (COBild*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													 if(pBild->pfnWM_KillFocus){ pBild->ThreadSicher_Anfang(); pBild->pfnWM_KillFocus(pBild); pBild->ThreadSicher_Ende(); }
 													 return NULL;
-		case WM_KEYDOWN      : pBild = (COBild*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_KEYDOWN      : pBild = (COBild*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 			                     if(IsWindowEnabled(hWnd)) pBild->WM_KeyDown(wParam);
 													 return NULL;
-		case WM_COMMAND      : pBild = (COBild*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_COMMAND      : pBild = (COBild*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 			                     if(!pBild->WM_Command(wParam)) return NULL;
 			                     else if(pBild->pfnWM_Command){ pBild->ThreadSicher_Anfang();
 														 if(!pBild->pfnWM_Command(pBild, wParam)){ pBild->ThreadSicher_Ende(); return NULL; }
@@ -73,15 +73,15 @@ LRESULT CALLBACK RePag::GUI::WndProc_Bild(HWND hWnd, unsigned int uiMessage, WPA
 													 }
 													 else PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 													 break;
-		case WM_CONTEXTMENU  : ((COBild*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_ContexMenu(lParam);
+		case WM_CONTEXTMENU  : ((COBild*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_ContexMenu(lParam);
 			                     return NULL;
 		case WM_LBUTTONDOWN  : SetFocus(hWnd);
 			                     return NULL;
 		case WM_LBUTTONUP    : PostMessage(GetParent(hWnd), WM_COMMAND, MAKEWPARAM(GetWindowLongPtr(hWnd, GWLP_ID), wParam), lParam);
 			                     break;
-		case WM_PAINT        : ((COBild*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT        : ((COBild*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 										       return NULL;
-		case WM_NCDESTROY    : pBild = (COBild*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY    : pBild = (COBild*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													 if(pBild->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pBild->htEffekt_Timer, INVALID_HANDLE_VALUE);
 			                     VMFreiV(pBild);
 			                     return NULL;

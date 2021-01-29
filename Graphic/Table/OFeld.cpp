@@ -6,7 +6,7 @@
 /****************************************************************************
   The MIT License(MIT)
 
-  Copyright(c) 2020 René Pagel
+  Copyright(c) 2021 René Pagel
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this softwareand associated documentation files(the "Software"), to deal
@@ -29,8 +29,14 @@
 
 #include "HTable.h"
 #include "OFeld.h"
-#define BY_COFELD 12
-#define _Feld ((STFeld*)c8Feld)
+#ifndef _64bit
+//#define BY_COFELD 12
+#define _Feld ((RePag::GUI::STFeld*)c8Feld)
+#else
+//#define BY_COFELD 16
+#define _Feld ((RePag::GUI::STFeld*)c12Feld)
+#endif
+
 //---------------------------------------------------------------------------
 RePag::GUI::COFeld* __vectorcall RePag::GUI::COFeldV(const unsigned char ucFeldtyp)
 {

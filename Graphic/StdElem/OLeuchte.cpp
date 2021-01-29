@@ -6,7 +6,7 @@
 /****************************************************************************
   The MIT License(MIT)
 
-  Copyright(c) 2020 René Pagel
+  Copyright(c) 2021 René Pagel
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this softwareand associated documentation files(the "Software"), to deal
@@ -48,9 +48,9 @@ LRESULT CALLBACK RePag::GUI::WndProc_Leuchte(HWND hWnd, unsigned int uiMessage, 
 {
 	COLeuchte* pLeuchte;
 	switch(uiMessage){
-		case WM_PAINT     : ((COLeuchte*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT     : ((COLeuchte*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 												return NULL;
-		case WM_NCDESTROY : pLeuchte = (COLeuchte*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY : pLeuchte = (COLeuchte*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 												if(pLeuchte->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pLeuchte->htEffekt_Timer, INVALID_HANDLE_VALUE);
 												VMFreiV(pLeuchte);
 												return NULL;

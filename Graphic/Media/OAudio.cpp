@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -50,13 +50,13 @@ LRESULT CALLBACK RePag::GUI::WndProc_Audio(HWND hWnd, unsigned int uiMessage, WP
  switch(uiMessage){
     case WM_CREATE          : ((COAudio*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 												      return NULL;
-		case WM_SIZE            : pAudio = (COAudio*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE            : pAudio = (COAudio*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 															if(pAudio) pAudio->WM_Size(lParam);
 															else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 													    return NULL;
-		case WM_CHAR            : if(IsWindowEnabled(hWnd)) ((COAudio*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Char(wParam);
+		case WM_CHAR            : if(IsWindowEnabled(hWnd)) ((COAudio*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Char(wParam);
 													    return NULL;
-		case WM_COMMAND         : pAudio = (COAudio*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_COMMAND         : pAudio = (COAudio*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 			                        if(!pAudio->WM_Command(wParam)) return NULL;
 			                        else if(pAudio->pfnWM_Command){ pAudio->ThreadSicher_Anfang();
 																if(!pAudio->pfnWM_Command(pAudio, wParam)){ pAudio->ThreadSicher_Ende(); return NULL; }
@@ -64,17 +64,17 @@ LRESULT CALLBACK RePag::GUI::WndProc_Audio(HWND hWnd, unsigned int uiMessage, WP
 													    }
 															else PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 													    break;
-		case WM_CONTEXTMENU     : ((COAudio*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_ContexMenu(lParam);
+		case WM_CONTEXTMENU     : ((COAudio*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_ContexMenu(lParam);
 			                        return NULL;
 		case WM_LBUTTONDOWN     : SetFocus(hWnd);
 			                        return NULL;
 		case WM_LBUTTONUP       : PostMessage(GetParent(hWnd), WM_COMMAND, MAKEWPARAM(GetWindowLongPtr(hWnd, GWLP_ID), wParam), lParam);
 			                        break;
-		case MCIWNDM_NOTIFYMODE : ((COAudio*)GetWindowLongPtr(hWnd, GWL_USERDATA))->MCIWNDM_NotifyMode(lParam);
+		case MCIWNDM_NOTIFYMODE : ((COAudio*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->MCIWNDM_NotifyMode(lParam);
 			                        return NULL;
-		case WM_PAINT           : ((COAudio*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT           : ((COAudio*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 										          return NULL;
-		case WM_NCDESTROY       : pAudio = (COAudio*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY       : pAudio = (COAudio*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 															if(pAudio->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pAudio->htEffekt_Timer, INVALID_HANDLE_VALUE);
 															if(pAudio->htPosition) DeleteTimerQueueTimer(TimerQueue(), pAudio->htPosition, INVALID_HANDLE_VALUE);
 			                        VMFreiV(pAudio);

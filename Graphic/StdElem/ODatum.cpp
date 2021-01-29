@@ -6,7 +6,7 @@
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2020 René Pagel
+	Copyright(c) 2021 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -53,20 +53,20 @@ LRESULT CALLBACK RePag::GUI::WndProc_Datum(HWND hWnd, unsigned int uiMessage, WP
 	switch(uiMessage){
 		case WM_CREATE    : ((CODatum*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 												return NULL;
-		case WM_SIZE      : pDatum = (CODatum*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE      : pDatum = (CODatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 												if(pDatum) pDatum->WM_Size_Element(hWnd, lParam);
 												else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 												return NULL;
-		//case WM_SETFOCUS    : pDatum = (CODatum*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		//case WM_SETFOCUS    : pDatum = (CODatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 				//                   SetFocus(pDatum->edDatum->HWND_Element());
 				//								  return NULL;
-		case WM_KILLFOCUS : ((CODatum*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_KillFocus();
+		case WM_KILLFOCUS : ((CODatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_KillFocus();
 												return NULL;
-		case WM_COMMAND   : pDatum = (CODatum*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_COMMAND   : pDatum = (CODatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 												if(!pDatum->WM_Command(wParam)) return NULL;
 												else PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 												break;
-		case WM_LBUTTONUP : pDatum = (CODatum*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_LBUTTONUP : pDatum = (CODatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 												pDatum->ThreadSicher_Anfang();
 												if(pDatum->WM_LButtonUp(lParam)){
 													if(pDatum->pfnWM_LButtonUp)	pDatum->pfnWM_LButtonUp(pDatum);
@@ -74,9 +74,9 @@ LRESULT CALLBACK RePag::GUI::WndProc_Datum(HWND hWnd, unsigned int uiMessage, WP
 												}
 												pDatum->ThreadSicher_Ende();
 												return NULL;
-		case WM_PAINT     : ((CODatum*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_Paint();
+		case WM_PAINT     : ((CODatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_Paint();
 												return NULL;
-		case WM_NCDESTROY : pDatum = (CODatum*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY : pDatum = (CODatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 												if(pDatum->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pDatum->htEffekt_Timer, INVALID_HANDLE_VALUE);
 												VMFreiV(pDatum);
 												return NULL;
@@ -90,23 +90,23 @@ LRESULT CALLBACK RePag::GUI::WndProc_EditDatum(HWND hWnd, unsigned int uiMessage
 	switch(uiMessage){
 		case WM_CREATE       : ((CODatum::COEditDatum*)((LPCREATESTRUCT)lParam)->lpCreateParams)->WM_Create(hWnd);
 													 return NULL;
-		case WM_SIZE         : pEditDatum = (CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_SIZE         : pEditDatum = (CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 													 if(pEditDatum) pEditDatum->WM_Size_Element(hWnd, lParam);
 													 else return DefWindowProc(hWnd, uiMessage, wParam, lParam);
 													 return NULL;
-		case WM_SETFOCUS     : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_SetFocus();
+		case WM_SETFOCUS     : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_SetFocus();
 														return NULL;
-		case WM_KILLFOCUS    : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_KillFocus();
+		case WM_KILLFOCUS    : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_KillFocus();
 														return NULL;
-		case WM_KEYDOWN      :	((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_KeyDown(wParam, lParam);
+		case WM_KEYDOWN      :	((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_KeyDown(wParam, lParam);
 														return NULL;
-		case WM_CHAR         :	pEditDatum = (CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_CHAR         :	pEditDatum = (CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 														pEditDatum->ThreadSicher_Anfang();
 														pEditDatum->WM_Char(wParam);
 														pEditDatum->WM_Char_EditDatum(wParam);
 														pEditDatum->ThreadSicher_Ende();
 														return NULL;
-		case WM_COMMAND       : pEditDatum = (CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_COMMAND       : pEditDatum = (CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 														if(!pEditDatum->WM_Command(wParam)) return NULL;
 														else if(!pEditDatum->WM_Command_EditDatum(wParam)) return NULL;
 														else if(pEditDatum->pfnWM_Command){
@@ -116,23 +116,23 @@ LRESULT CALLBACK RePag::GUI::WndProc_EditDatum(HWND hWnd, unsigned int uiMessage
 														}
 														else PostMessage(GetParent(hWnd), WM_COMMAND, wParam, lParam);
 														break;
-		case WM_CONTEXTMENU   : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_ContexMenu(lParam);
+		case WM_CONTEXTMENU   : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_ContexMenu(lParam);
 														return NULL;
-		case WM_MOUSEMOVE     : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_MouseMove(wParam, lParam);
+		case WM_MOUSEMOVE     : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_MouseMove(wParam, lParam);
 														return NULL;
-		case WM_LBUTTONDOWN   : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonDown(wParam, lParam);
+		case WM_LBUTTONDOWN   : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonDown(wParam, lParam);
 														return NULL;
-		case WM_LBUTTONUP     : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonUp(wParam, lParam);
+		case WM_LBUTTONUP     : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonUp(wParam, lParam);
 														return NULL;
-		case WM_LBUTTONDBLCLK : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWL_USERDATA))->WM_LButtonDBClick(lParam);
+		case WM_LBUTTONDBLCLK : ((CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA))->WM_LButtonDBClick(lParam);
 														return NULL;
-		case WM_PAINT         : pEditDatum = (CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_PAINT         : pEditDatum = (CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 														pEditDatum->ThreadSicher_Anfang();
 														pEditDatum->WM_Paint();
 														pEditDatum->WM_Paint_EditDatum();
 														pEditDatum->ThreadSicher_Ende();
 														return NULL;
-		case WM_NCDESTROY     : pEditDatum = (CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		case WM_NCDESTROY     : pEditDatum = (CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 														if(pEditDatum->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pEditDatum->htEffekt_Timer, INVALID_HANDLE_VALUE);
 														pEditDatum->pDatum->edDatum = NULL; VMFreiV(pEditDatum);
 														return NULL;
@@ -375,7 +375,7 @@ void __vectorcall RePag::GUI::CODatum::WM_KillFocus(void)
  else if(IsWindowVisible(hWndElement)){ ShowWindow(hWndElement, SW_HIDE);
 	 RECT stRect; HWND hWndZeichnen_1, hWndZeichnen_2 = GetParent(hWndElement); 
 	 while(IsChild(hWndZeichnen_1 = GetParent(hWndZeichnen_2), hWndZeichnen_2)) hWndZeichnen_2 = hWndZeichnen_1;
-	 ((COElement*)GetWindowLongPtr(hWndZeichnen_2, GWL_USERDATA))->UpdateFenster(&Fenster(stRect), true, false);
+	 ((COElement*)GetWindowLongPtr(hWndZeichnen_2, GWLP_USERDATA))->UpdateFenster(&Fenster(stRect), true, false);
  }
  ThreadSicher_Ende();
 }
@@ -479,7 +479,7 @@ bool __vectorcall RePag::GUI::CODatum::WM_LButtonUp(LPARAM lParam)
 
  RECT stRect; HWND hWndZeichnen_1, hWndZeichnen_2 = GetParent(hWndElement); 
  while(IsChild(hWndZeichnen_1 = GetParent(hWndZeichnen_2), hWndZeichnen_2)) hWndZeichnen_2 = hWndZeichnen_1;
- ((COElement*)GetWindowLongPtr(hWndZeichnen_2, GWL_USERDATA))->UpdateFenster(&Fenster(stRect), true, false);
+ ((COElement*)GetWindowLongPtr(hWndZeichnen_2, GWLP_USERDATA))->UpdateFenster(&Fenster(stRect), true, false);
  return true;
 }
 //---------------------------------------------------------------------------------------------------------------------------------------
@@ -1055,7 +1055,7 @@ void __vectorcall RePag::GUI::CODatum::COEditDatum::DatumZeitText(void)
 		 }
 		 while(ucStelle_Maske < ucLange);
 
-		 if(pDatum->bAnordnung_DatumZeit){ asMaske_Datum += asMaske_Zeit;	Zeichenmaske(asMaske_Datum.c_Str());}
+		 if(pDatum->bAnordnung_DatumZeit){ asMaske_Datum += asMaske_Zeit;	Zeichenmaske(asMaske_Datum.c_Str()); }
 		 else{ asMaske_Zeit += asMaske_Datum; Zeichenmaske(asMaske_Zeit.c_Str());}
 	 }
 	 else Zeichenmaske(asMaske_Datum.c_Str());
