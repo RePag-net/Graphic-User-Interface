@@ -109,7 +109,7 @@ namespace RePag
 													else break;
 
 				case WM_PAINT   :	pDialog = (CODialog*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
-													pDialog->WM_Paint_Dialog();
+													if(pDialog)	pDialog->WM_Paint_Dialog();
 													return NULL;
 				case WM_CLOSE   :	DestroyWindow(hWnd);
 													return NULL;

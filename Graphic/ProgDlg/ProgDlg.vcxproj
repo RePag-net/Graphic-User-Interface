@@ -220,7 +220,6 @@
       <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</BuildInParallel>
       <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">true</BuildInParallel>
     </CustomBuild>
-    <None Include="RePag.GUI.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ProgDlg.rc" />

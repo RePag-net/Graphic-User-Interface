@@ -62,9 +62,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="RePag.GUI.nuspec" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="ProgDlg.rc">
       <Filter>Ressourcendateien</Filter>
     </ResourceCompile>
