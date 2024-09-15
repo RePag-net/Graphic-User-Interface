@@ -1,12 +1,12 @@
 /****************************************************************************
-	ODatum.cpp
+	ODatum.cppp
 	For more information see https://github.com/RePag-net/Graphic-User-Interface
 *****************************************************************************/
 
 /****************************************************************************
 	The MIT License(MIT)
 
-	Copyright(c) 2021 René Pagel
+	Copyright(c) 2024 René Pagel
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this softwareand associated documentation files(the "Software"), to deal
@@ -134,7 +134,7 @@ LRESULT CALLBACK RePag::GUI::WndProc_EditDatum(HWND hWnd, unsigned int uiMessage
 														return NULL;
 		case WM_NCDESTROY     : pEditDatum = (CODatum::COEditDatum*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 														if(pEditDatum->htEffekt_Timer) DeleteTimerQueueTimer(TimerQueue(), pEditDatum->htEffekt_Timer, INVALID_HANDLE_VALUE);
-														pEditDatum->pDatum->edDatum = NULL; VMFreiV(pEditDatum);
+														VMFreiV(pEditDatum);
 														return NULL;
 	}
 	return DefWindowProc(hWnd, uiMessage, wParam, lParam);
@@ -197,8 +197,6 @@ void __vectorcall RePag::GUI::CODatum::CODatumV(VMEMORY vmSpeicher, const char* 
 //---------------------------------------------------------------------------------------------------------------------------------------
 VMEMORY __vectorcall RePag::GUI::CODatum::COFreiV(void)
 {
- if(edDatum) DestroyWindow(edDatum->HWND_Element()); 
- DestroyWindow(lbMonat->HWND_Element());
  return ((COElement*)this)->COFreiV();
 }
 //---------------------------------------------------------------------------------------------------------------------------------------
@@ -352,7 +350,7 @@ void __vectorcall RePag::GUI::CODatum::WM_Create(HWND hWnd)
  hWndElement = hWnd; LOGFONT lfTemp;
 
  edDatum->Schriftart(Schrift(lfTemp));
- edDatum->ErstellFenster(GetParent(hWndElement), lHohe_EditDatum, lBreite, ptPosition.x, ptPosition.y - lHohe_EditDatum); 
+ edDatum->ErstellFenster(GetParent(hWnd), lHohe_EditDatum, lBreite, ptPosition.x, ptPosition.y - lHohe_EditDatum);
  NeuesFenster(lHohe - lHohe_EditDatum, lBreite, ptPosition.x, ptPosition.y);
 
  SetzWochentag(); edDatum->DatumZeitText(); 
@@ -457,7 +455,7 @@ bool __vectorcall RePag::GUI::CODatum::WM_LButtonUp(LPARAM lParam)
 		 stDatum.wYear--; UpdateFenster(nullptr, true, false);
 	 }
 	 else if(LOWORD(lParam) < ucJahr_Pos_x - ucZeilenhohe){ long lTemp;
-	   lbMonat->NeuesFenster(lHohe - ucZeilenhohe, lbMonat->Breite(lTemp), lbMonat->Pos_X(lTemp), ucZeilenhohe); lbMonat->SetzSichtbar(true);}
+		 lbMonat->NeuesFenster(lHohe - ucZeilenhohe, lbMonat->Breite(lTemp), 0, ucZeilenhohe); lbMonat->SetzSichtbar(true); }
 	   return false;
  }
  else{ (ucErsterWochentag ? stDatum.wDay = 8 - ucErsterWochentag : stDatum.wDay = 1);
